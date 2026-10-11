@@ -1,7 +1,6 @@
 # Dependencies for MyOwnLLM
 # Install using: pip install -r requirements.txt
-#
-# Note: For Windows laptop CPU training, use:
-# pip install torch --index-url https://download.pytorch.org/whl/cpu
 
-torch>=2.0.0
+Flask
+requests
+gunicorn
