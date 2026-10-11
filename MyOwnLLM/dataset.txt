@@ -1,0 +1,302 @@
+MYOWNLLM TRAINING DATASET
+Purpose: Educational examples for a small language-model experiment.
+Note: This is plain text for next-character prediction, not a structured QA database.
+The model may still produce incorrect or incoherent answers, especially when trained from scratch.
+
+====================
+BEGINNER: GENERAL KNOWLEDGE
+====================
+
+Question: What is Artificial Intelligence?
+Answer: Artificial Intelligence, or AI, is a field of computer science that builds systems able to perform tasks such as recognizing patterns, understanding language, and making predictions. Example: a voice assistant that answers questions uses AI.
+
+Question: What is Machine Learning?
+Answer: Machine Learning, or ML, is a part of AI. A machine-learning system learns patterns from examples instead of being programmed with every rule. For example, a spam filter learns from messages labeled spam or not spam.
+
+Question: What is Deep Learning?
+Answer: Deep Learning is a type of machine learning that uses neural networks with many layers. It is useful for tasks such as image recognition, speech recognition, and language processing.
+
+Question: What is a Large Language Model?
+Answer: A Large Language Model, or LLM, is a neural network trained on large amounts of text. It learns statistical patterns in language and can generate text, summarize information, and answer many kinds of questions. It can still make mistakes.
+
+Question: What is a token?
+Answer: A token is a unit of text processed by a language model. Depending on the tokenizer, a token can be a character, part of a word, a whole word, or punctuation.
+
+Question: What is a tokenizer?
+Answer: A tokenizer converts text into tokens that a model can process. A character-level tokenizer treats individual characters as tokens, while a subword tokenizer can represent common word pieces.
+
+Question: What is a dataset?
+Answer: A dataset is a collection of examples used to train, validate, or test a model. A good dataset is relevant, varied, accurate, and formatted consistently.
+
+Question: What is training in machine learning?
+Answer: Training is the process of adjusting a model's parameters using examples so that its predictions become better according to a chosen loss function.
+
+Question: What is inference?
+Answer: Inference means using a trained model to make predictions or generate output. When a user enters a prompt and the model generates text, the model is performing inference.
+
+Question: What is Python?
+Answer: Python is a general-purpose programming language known for readable syntax. It is commonly used in automation, web development, data analysis, and artificial intelligence.
+
+Question: What is an algorithm?
+Answer: An algorithm is a clear sequence of steps for solving a problem or completing a task. A recipe is a simple everyday example of an algorithm.
+
+Question: What is a variable in Python?
+Answer: A variable is a name that refers to a value. Example: age = 20 stores the integer value 20 under the name age.
+
+Question: What is a function in Python?
+Answer: A function is a reusable block of code that performs a task. It can accept inputs called parameters and may return a result.
+
+Question: What is a loop?
+Answer: A loop repeats a block of code. A for loop is often used to process items in a sequence, while a while loop repeats while a condition remains true.
+
+Question: What is a database?
+Answer: A database is an organized collection of information that can be stored, searched, updated, and managed by software.
+
+Question: What is an API?
+Answer: An API is a defined way for software systems to communicate. For example, a weather application may call an API to request weather data from a server.
+
+Question: What is a web server?
+Answer: A web server receives HTTP requests and sends responses. A response may contain a web page, JSON data, an image, or an error message.
+
+Question: What is a neural network?
+Answer: A neural network is a machine-learning model made of connected computational units. During training, it adjusts numerical parameters to learn patterns in data.
+
+Question: What is a prompt?
+Answer: A prompt is the text or other input given to a model to guide its response. Clear prompts often include the task, relevant context, and desired format.
+
+Question: What is debugging?
+Answer: Debugging is the process of finding, understanding, and fixing problems in software. Reading the error message and reproducing the problem are useful first steps.
+
+====================
+BEGINNER: AI AND LLM
+====================
+
+Question: What does LLM stand for?
+Answer: LLM stands for Large Language Model.
+
+Question: How does a language model generate text?
+Answer: A language model uses the current context to predict a likely next token. It adds a selected token to the context and repeats the process until it reaches a stopping condition.
+
+Question: Does a language model think exactly like a human?
+Answer: No. A language model computes patterns from its training and input. Its fluent responses do not prove that it understands or reasons exactly as a human does.
+
+Question: What is a Transformer?
+Answer: A Transformer is a neural-network architecture that uses attention mechanisms to process sequences. Transformers are widely used in modern language models.
+
+Question: What is attention in a Transformer?
+Answer: Attention lets a model calculate how strongly different tokens should influence the representation of a token. This helps the model use relevant context.
+
+Question: What is RAG?
+Answer: RAG stands for Retrieval-Augmented Generation. A RAG system searches a knowledge source for relevant information and gives the retrieved information to a language model as context for generating an answer.
+
+Question: Is adding RAG the same as training a model?
+Answer: No. Training adjusts model parameters using examples. RAG retrieves information at answer time and supplies it as context. A system can use RAG without retraining its language model.
+
+Question: What is an embedding?
+Answer: An embedding is a numerical vector representing information such as a word, sentence, or document chunk. Similar meanings can have vectors that are close under a suitable similarity measure.
+
+Question: What is a vector database?
+Answer: A vector database stores vectors and supports similarity search. It is often used to find document chunks related to a query in a RAG application.
+
+Question: What is hallucination in an LLM?
+Answer: A hallucination is an answer that sounds plausible but contains unsupported or incorrect information. Checking sources and clearly expressing uncertainty can reduce risk.
+
+Question: What is fine-tuning?
+Answer: Fine-tuning continues training a pretrained model on a more specific dataset to adapt its behavior or knowledge patterns to a task or domain.
+
+Question: What is the difference between training and testing?
+Answer: Training data is used to adjust model parameters. Validation data helps compare settings during development. Test data is held aside to estimate performance on examples not used for tuning.
+
+====================
+INTERMEDIATE: HOW THINGS WORK
+====================
+
+Question: Explain the basic steps in a RAG system.
+Answer: First, documents are collected and divided into smaller chunks. Next, each chunk is converted into an embedding and stored in a searchable index. When a user asks a question, the system embeds the query, retrieves relevant chunks, places them in the prompt, and asks the language model to answer using that context. The answer should be checked against the retrieved evidence.
+
+Question: Why divide documents into chunks?
+Answer: Chunking makes long documents easier to search and fit into a model's context window. Chunks that are too small may lose context, while chunks that are too large may include irrelevant material. Chunk size and overlap should be tested for the target documents.
+
+Question: What is the difference between a keyword search and vector search?
+Answer: Keyword search looks for matching words or terms. Vector search compares embeddings to find semantically related text, even when the wording differs. Some systems combine both methods for better retrieval.
+
+Question: What is the difference between an LLM and a search engine?
+Answer: A search engine retrieves and ranks existing pages or documents. An LLM generates text based on its learned patterns and current context. A RAG system combines retrieval with generation, but generated claims still need evidence.
+
+Question: What is the difference between AI, ML, and deep learning?
+Answer: AI is the broad field of building systems that perform intelligent tasks. ML is a subset of AI that learns patterns from data. Deep learning is a subset of ML based on multi-layer neural networks.
+
+Question: Why does a small language model generate gibberish?
+Answer: A small model may have too little training data, too few training steps, an unsuitable tokenizer, a limited architecture, or poorly formatted examples. Low training loss alone does not guarantee useful answers. Inspecting sample outputs and evaluating held-out prompts helps identify the problem.
+
+Question: Why is a character-level model limited?
+Answer: A character-level model predicts one character at a time and must learn spelling, words, grammar, and meaning from character sequences. It can be a useful educational experiment, but it often needs substantial data and training to generate coherent long text.
+
+Question: What is a context window?
+Answer: A context window is the amount of tokenized input and generated text a model can consider at once. If relevant information is outside the window, the model may not be able to use it directly.
+
+Question: What is temperature in text generation?
+Answer: Temperature adjusts how sharply or broadly a model samples from its next-token probabilities. Lower temperature often makes output more predictable; higher temperature often makes it more varied. Neither setting can create knowledge the model has not learned.
+
+Question: What is top-k sampling?
+Answer: Top-k sampling restricts the next-token choices to the k tokens with the highest predicted probabilities, then samples among those candidates. A very small k can make text repetitive, while a larger k permits more variety.
+
+Question: What is cross-entropy loss?
+Answer: Cross-entropy loss measures how well a model's predicted probability distribution matches the correct next token in a classification-style prediction task. Lower loss generally means better next-token prediction on the measured data, but it does not by itself guarantee factual or helpful answers.
+
+Question: Why use a validation set?
+Answer: A validation set contains examples not used for parameter updates. It helps estimate generalization and compare training settings. If training performance improves while validation performance gets worse, the model may be overfitting.
+
+Question: What is overfitting?
+Answer: Overfitting occurs when a model learns training examples too specifically and performs poorly on new examples. More representative data, suitable regularization, and validation-based model selection can help.
+
+Question: What is an epoch?
+Answer: An epoch is one complete pass through the training dataset. More epochs are not always better because a model can overfit or simply fail to learn useful patterns from inadequate data.
+
+Question: What is a checkpoint?
+Answer: A checkpoint is a saved snapshot of model parameters and sometimes optimizer or training state. It allows a training run to be resumed or a trained model to be loaded for inference.
+
+Question: Why can a model repeat words?
+Answer: Repetition can result from learned data patterns, limited training, decoding settings, or the model becoming stuck in a likely sequence. Repetition penalties and decoding changes may help, but the underlying model and data matter too.
+
+Question: How can I evaluate a question-answering model?
+Answer: Prepare a held-out set of questions with expected key points. Score answers for relevance, factual correctness, completeness, and unsupported claims. Review failures by category and repeat the evaluation after each change.
+
+====================
+ADVANCED: MODEL ENGINEERING
+====================
+
+Question: Describe autoregressive language modeling.
+Answer: An autoregressive language model factorizes the probability of a token sequence into conditional next-token probabilities. It predicts each token using the preceding context. During generation, the model repeatedly samples or selects the next token and appends it to the sequence.
+
+Question: What is causal attention?
+Answer: Causal attention prevents a token position from attending to future token positions during autoregressive training. A causal mask ensures that next-token prediction uses only permitted preceding context.
+
+Question: What are query, key, and value in attention?
+Answer: In scaled dot-product attention, the input representations are projected into queries, keys, and values. Query-key similarity produces attention scores, the scores are scaled and normalized, and the resulting weights combine value vectors. Multi-head attention performs this operation in several learned representation subspaces.
+
+Question: What is the purpose of an optimizer?
+Answer: An optimizer updates trainable parameters using gradients computed from the loss. Adam and AdamW are commonly used for neural-network training. Learning rate and other optimizer settings can strongly affect stability and convergence.
+
+Question: What is gradient clipping?
+Answer: Gradient clipping limits the size of gradients before an optimizer update. It can help prevent excessively large updates and improve stability in some training runs.
+
+Question: What is teacher forcing in language-model training?
+Answer: During standard next-token training, the model is usually given the true preceding tokens from the training sequence and learns to predict the next token. During free-running generation, it instead conditions on its own generated tokens, so errors can accumulate.
+
+Question: Why does low validation loss not guarantee correct answers?
+Answer: Next-token loss measures prediction quality on a particular token distribution. It does not directly measure whether answers are useful, factually grounded, safe, or correct on user questions. Separate task-based evaluations are necessary.
+
+Question: How should I split a text dataset?
+Answer: Keep training, validation, and test examples separated. Avoid placing near-duplicate passages or continuations across splits when that would leak information. For a small dataset, use a documented split and interpret metrics cautiously.
+
+Question: What is data leakage?
+Answer: Data leakage occurs when information from validation or test examples improperly influences training or model selection. It can make evaluation results look better than real-world performance.
+
+Question: How can a RAG system reduce unsupported claims?
+Answer: Retrieve relevant and reliable passages, limit the prompt to useful evidence, instruct the model to answer from the supplied context, require citations or quoted evidence where appropriate, and allow it to say when the evidence is insufficient. Evaluate retrieval and generation separately.
+
+Question: What is retrieval recall in RAG?
+Answer: Retrieval recall measures how many of the relevant source items are retrieved among all relevant items for a query. It evaluates retrieval coverage, not whether the final generated answer is correct.
+
+Question: What is the difference between retrieval quality and generation quality?
+Answer: Retrieval quality concerns whether the system finds the right evidence. Generation quality concerns whether the model uses that evidence correctly and produces a clear answer. Good retrieval cannot fully compensate for a generator that misuses the evidence.
+
+Question: What is quantization?
+Answer: Quantization represents model weights or activations using lower-precision numerical formats. It can reduce memory use and sometimes improve inference speed, but it may affect model quality depending on the method and model.
+
+Question: What is the difference between parameters and tokens?
+Answer: Parameters are learned numerical values inside a model. Tokens are units of input or output text. A model's parameter count and the number of tokens used to train it describe different things.
+
+Question: How can I debug a training run that produces gibberish?
+Answer: First, verify that the tokenizer can encode and decode text correctly. Next, try to overfit a tiny batch as a sanity check, inspect loss curves, confirm that training and inference use the same vocabulary and model configuration, and test prompts similar to the training format. Then increase dataset quality and size and evaluate on held-out examples.
+
+====================
+PYTHON: BEGINNER TO INTERMEDIATE
+====================
+
+Question: How do I print Hello World in Python?
+Answer: Use print("Hello, world!") to display the text Hello, world! in the terminal.
+
+Question: How do I create a list in Python?
+Answer: Use square brackets. Example: fruits = ["apple", "banana", "mango"]. Lists preserve order and can be changed after creation.
+
+Question: How do I define a function in Python?
+Answer: Use the def keyword. Example:
+def add(a, b):
+    return a + b
+Calling add(2, 3) returns 5.
+
+Question: How do I handle an error in Python?
+Answer: Use try and except when you can handle a known exception. Example:
+try:
+    number = int("abc")
+except ValueError:
+    print("Please provide a valid integer.")
+Do not silently catch every exception unless there is a specific reason.
+
+Question: What does ModuleNotFoundError mean?
+Answer: ModuleNotFoundError means Python could not find a module that the code tried to import. Check that the package is installed in the active environment and that the correct Python interpreter is being used.
+
+Question: How do I install a Python package in a virtual environment?
+Answer: Activate the intended virtual environment, then run python -m pip install package_name. Using python -m pip helps target pip to the active Python interpreter.
+
+Question: What is a virtual environment?
+Answer: A virtual environment isolates a project's Python packages from other projects. It helps keep dependencies organized and reduces version conflicts.
+
+Question: What is JSON?
+Answer: JSON is a text format for structured data using objects, arrays, strings, numbers, booleans, and null. It is commonly used to exchange data between web applications and APIs.
+
+Question: What is an HTTP POST request?
+Answer: An HTTP POST request sends data to a server, often to create a resource or process submitted information. A web chat interface may send a user's message to a backend using POST.
+
+Question: What should I check when a Flask page does not open?
+Answer: Confirm that Flask is running, open the exact local address printed in the terminal, check that the route exists, and inspect the terminal for errors. If a template is used, confirm it is inside the templates folder.
+
+====================
+PROBLEM SOLVING
+====================
+
+Question: My model generates random-looking text. What should I do?
+Answer: Check that the model loads the intended checkpoint and vocabulary. Confirm that training actually updates the parameters, inspect training and validation loss, and verify tokenizer consistency. Add varied, clean examples and evaluate with a fixed set of prompts. A small dataset and a character-level model may remain limited even after debugging.
+
+Question: My loss becomes NaN. What should I check?
+Answer: Check for invalid input values, an excessive learning rate, unstable gradients, incorrect loss inputs, and division by zero. Print tensor shapes and check whether tensors contain NaN or infinity. Change one factor at a time.
+
+Question: My Python code says file not found. What should I do?
+Answer: Check the current working directory, the exact file name, and the file path. In a terminal, use the directory listing command to confirm the file exists. Use an absolute path when needed.
+
+Question: How do I solve a problem systematically?
+Answer: State the expected result, reproduce the problem, read the error message, reduce the problem to a small example, test one possible cause at a time, and record the fix. Then rerun the original test to confirm the issue is resolved.
+
+Question: What is the best way to learn a difficult topic?
+Answer: Start with a simple definition, learn the core terms, study a worked example, practice a small problem, and then explore deeper details. Explain the idea in your own words and check your understanding with new examples.
+
+====================
+CONVERSATION EXAMPLES
+====================
+
+User: Hi
+Assistant: Hello! What would you like to learn or work on today?
+
+User: Can you explain AI simply?
+Assistant: AI is a way to build computer systems that perform tasks such as recognizing images, understanding language, or making predictions. A spam filter is one everyday example.
+
+User: Give me an example.
+Assistant: Imagine an email app that learns from examples of spam and normal messages. When a new email arrives, it estimates which category the message belongs to.
+
+User: Explain it at an intermediate level.
+Assistant: A spam classifier converts message text into features or numerical representations, then uses a trained model to estimate the probability that a message is spam. Its performance depends on the training data, evaluation method, and how well it handles new messages.
+
+User: Explain it at an advanced level.
+Assistant: A text classifier may use learned embeddings and a neural network to map an input message to class logits. A softmax or sigmoid can convert logits into probabilities, depending on the task. Evaluate it with metrics such as precision, recall, F1 score, and calibration where appropriate.
+
+User: I do not know the answer.
+Assistant: That is okay. Tell me which part is confusing, and we can break it into smaller steps.
+
+User: Thanks
+Assistant: You are welcome! Ask another question whenever you are ready.
+
+====================
+END OF DATASET
+====================
