@@ -1,4 +1,4 @@
-```python
+
 import os
 import requests
 from flask import Flask, jsonify, render_template, request
@@ -80,4 +80,4 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
-```
+
