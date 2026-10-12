@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register | NovaMind AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      padding: 20px; background: #080d19; color: #eef2ff;
+      font-family: Arial, sans-serif;
+    }
+    .card {
+      width: 100%; max-width: 420px; padding: 30px;
+      border: 1px solid #2a3854; border-radius: 18px;
+      background: #111a2c;
+    }
+    h1 { margin-top: 0; }
+    p { color: #aab8d2; }
+    label { display: block; margin: 16px 0 7px; }
+    input {
+      width: 100%; padding: 12px; border-radius: 8px;
+      border: 1px solid #394866; background: #0a1120;
+      color: white;
+    }
+    button {
+      width: 100%; margin-top: 20px; padding: 12px;
+      border: 0; border-radius: 8px; background: #5277ff;
+      color: white; cursor: pointer; font-weight: bold;
+    }
+    a { color: #91a8ff; }
+    .notice { margin: 12px 0; color: #fca5a5; }
+    .success { color: #86efac; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Create account ✨</h1>
+    <p>Join NovaMind AI</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="notice {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text"
+             autocomplete="name" maxlength="80" required>
+
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email"
+             autocomplete="email" maxlength="254" required>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password"
+             autocomplete="new-password" minlength="8" required>
+
+      <label for="confirm_password">Confirm password</label>
+      <input id="confirm_password" name="confirm_password"
+             type="password" autocomplete="new-password"
+             minlength="8" required>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p>Already registered?
+      <a href="{{ url_for('login') }}">Login</a>
+    </p>
+  </main>
+</body>
+</html>

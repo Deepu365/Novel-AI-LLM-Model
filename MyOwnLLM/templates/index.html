@@ -4,603 +4,1317 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1020">
-  <title>NovaMind AI | Intelligent Chat Assistant</title>
-
+  <title>NovaMind AI</title>
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: #11182b;
+      --panel2: #18223a;
+      --border: #28334d;
+      --text: #eef2ff;
+      --muted: #9ba8c4;
+      --accent: #8b7cff;
+      --accent2: #5b9dff;
+      --danger: #ff7185;
+    }
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #080d19;
-      color: #eef2ff;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 12px;
+      height: 100dvh;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.55 system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
     }
 
     .app {
-      width: 100%;
-      max-width: 1100px;
-      height: 92vh;
-      min-height: 500px;
-      display: flex;
-      background: #111a2c;
-      border: 1px solid #2a3854;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 20px 70px #0006;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      height: 100dvh;
     }
 
     .sidebar {
-      width: 245px;
-      min-width: 210px;
       display: flex;
       flex-direction: column;
-      background: #0d1526;
-      border-right: 1px solid #2a3854;
-    }
-
-    .side-top {
-      padding: 16px;
-      border-bottom: 1px solid #2a3854;
-    }
-
-    .side-title {
-      font-weight: bold;
-      margin-bottom: 14px;
-      font-size: 17px;
-    }
-
-    .new-chat {
-      width: 100%;
-      padding: 12px;
-      background: #315de8;
-      color: white;
-      border: 0;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .history-heading {
-      padding: 16px 14px 8px;
-      color: #aab8d2;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    #historyList {
-      flex: 1;
-      overflow-y: auto;
-      padding: 5px 9px 12px;
-    }
-
-    .history-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 5px;
-    }
-
-    .history-open {
-      flex: 1;
-      min-width: 0;
-      padding: 11px 9px;
-      text-align: left;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      color: #dce5fa;
-      background: transparent;
-      cursor: pointer;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .history-open:hover,
-    .history-open.active {
-      background: #202c43;
-      border-color: #34435f;
-    }
-
-    .delete-chat {
-      padding: 8px;
-      background: transparent;
-      color: #fca5a5;
-      border: 0;
-      border-radius: 7px;
-      cursor: pointer;
-    }
-
-    .delete-chat:hover {
-      background: #43232f;
-    }
-
-    .empty-history {
-      padding: 10px;
-      color: #8796b4;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .main-chat {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 20px;
-      border-bottom: 1px solid #2a3854;
-      background: #141e32;
+      gap: 14px;
+      padding: 18px 14px;
+      background: #0e1527;
+      border-right: 1px solid var(--border);
+      min-height: 0;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      padding: 4px 5px;
     }
 
-    .logo {
-      width: 43px;
-      height: 43px;
+    .brand-icon {
       display: grid;
       place-items: center;
-      border-radius: 13px;
-      background: linear-gradient(135deg, #5578ff, #9b6cff);
-      font-size: 23px;
-      font-weight: bold;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
     }
 
-    header h1 {
-      margin: 0 0 5px;
-      font-size: 24px;
+    .primary, .secondary, .icon-button {
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 10px 12px;
+      background: var(--panel2);
     }
 
-    header p {
-      margin: 0;
-      color: #aab8d2;
-      font-size: 13px;
+    .primary {
+      background: linear-gradient(135deg, #7665f5, #477fe8);
+      border: 0;
+      font-weight: 700;
     }
 
-    .details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 15px;
+    .primary:hover, .secondary:hover, .icon-button:hover {
+      filter: brightness(1.12);
     }
 
-    .tag {
-      padding: 7px 10px;
-      border: 1px solid #34435f;
-      border-radius: 20px;
-      color: #cbd7f1;
+    .search, .field {
+      width: 100%;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    .section-label {
+      color: var(--muted);
+      text-transform: uppercase;
       font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 5px;
     }
 
-    .status-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #4ade80;
-      margin-right: 5px;
-    }
-
-    #messages {
+    .chat-list {
       flex: 1;
+      min-height: 80px;
       overflow-y: auto;
-      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 5px;
     }
 
-    .message {
-      max-width: 88%;
-      padding: 13px 16px;
-      border-radius: 15px;
-      white-space: pre-wrap;
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .chat-item.active {
+      background: var(--panel2);
+      border-color: var(--border);
+    }
+
+    .chat-open {
+      flex: 1;
+      min-width: 0;
+      padding: 8px;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chat-action {
+      padding: 6px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 6px;
+    }
+
+    .chat-action:hover { color: var(--text); background: #27324c; }
+
+    .user-panel {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
       overflow-wrap: anywhere;
-      line-height: 1.65;
-      font-size: 14px;
     }
 
-    .user {
-      align-self: flex-end;
-      background: #315de8;
-      border-bottom-right-radius: 5px;
+    .user-name { color: var(--text); font-weight: 700; }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
     }
 
-    .bot {
-      align-self: flex-start;
-      background: #202c43;
-      border: 1px solid #2d3a53;
-      border-bottom-left-radius: 5px;
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(17, 24, 43, .72);
+    }
+
+    .topbar h1 { font-size: 16px; margin: 0; }
+    .topbar small { color: var(--muted); }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .model-select {
+      max-width: 180px;
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px;
+    }
+
+    .messages {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 24px max(18px, calc((100% - 850px) / 2));
+      scroll-behavior: smooth;
     }
 
     .welcome {
-      max-width: 100%;
-      line-height: 1.8;
-    }
-
-    form {
+      min-height: 100%;
       display: flex;
-      gap: 10px;
-      padding: 16px;
-      border-top: 1px solid #2a3854;
-      background: #141e32;
-    }
-
-    input {
-      flex: 1;
-      min-width: 0;
-      padding: 14px;
-      border: 1px solid #394866;
-      border-radius: 12px;
-      background: #0a1120;
-      color: white;
-      outline: none;
-      font-size: 14px;
-    }
-
-    input:focus { border-color: #718cff; }
-
-    #sendButton {
-      padding: 0 22px;
-      border: 0;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #5277ff, #7959e9);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: wait;
-    }
-
-    .footer {
-      padding: 0 12px 12px;
-      background: #141e32;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      color: #8796b4;
-      font-size: 11px;
+      padding: 30px 10px;
     }
 
-    .save-status {
-      color: #8da2c7;
-      font-size: 11px;
-      text-align: right;
-      padding: 0 16px 8px;
-      background: #141e32;
+    .welcome-logo {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      font-size: 30px;
+      background: linear-gradient(135deg, #7665f5, #477fe8);
+      box-shadow: 0 12px 50px #7161f433;
     }
 
-    @media (max-width: 650px) {
-      body { padding: 0; }
-      .app {
-        height: 100vh;
-        min-height: 0;
-        border-radius: 0;
-      }
-      .sidebar {
-        width: 125px;
-        min-width: 125px;
-      }
-      .side-top { padding: 10px; }
-      .side-title { font-size: 14px; }
-      .new-chat { padding: 10px 5px; font-size: 12px; }
-      .history-heading { padding: 12px 8px 6px; font-size: 10px; }
-      #historyList { padding: 4px; }
-      .history-open { padding: 9px 5px; font-size: 11px; }
-      .delete-chat { padding: 5px 3px; font-size: 11px; }
-      header { padding: 13px; }
-      header h1 { font-size: 19px; }
-      .logo { width: 35px; height: 35px; font-size: 19px; }
-      .details { gap: 5px; }
-      .tag { padding: 5px 6px; font-size: 9px; }
-      #messages { padding: 12px; }
-      .message { max-width: 96%; font-size: 13px; padding: 11px; }
-      form { padding: 10px; gap: 6px; }
-      input { padding: 11px 8px; font-size: 12px; }
-      #sendButton { padding: 0 10px; font-size: 12px; }
+    .welcome h2 { font-size: clamp(24px, 4vw, 34px); margin: 18px 0 6px; }
+    .welcome p { color: var(--muted); max-width: 520px; }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .suggestion {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .message {
+      margin: 0 auto 22px;
+      max-width: 850px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+    }
+
+    .message-body { min-width: 0; flex: 1; }
+    .message-role { font-size: 12px; font-weight: 800; color: var(--muted); margin: 2px 0 6px; }
+    .message-content { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .message-content pre {
+      background: #070b15;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .message-content code {
+      background: #202a42;
+      border-radius: 4px;
+      padding: 2px 5px;
+      font-family: Consolas, monospace;
+    }
+
+    .message-content pre code { background: transparent; padding: 0; }
+    .message-tools { display: flex; gap: 6px; margin-top: 8px; }
+
+    .message-tools button {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .composer-area {
+      padding: 10px 18px 15px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(transparent, var(--bg) 12%);
+    }
+
+    .tools-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 850px;
+      margin: 0 auto 9px;
+    }
+
+    .tools-row label, .tools-row button {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #fileInput { display: none; }
+    .file-label {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 7px 10px;
+      background: var(--panel);
+    }
+
+    .doc-status, .save-status {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .composer {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid #34415f;
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: 0 12px 45px #0003;
+    }
+
+    .composer textarea {
+      display: block;
+      width: 100%;
+      resize: vertical;
+      min-height: 48px;
+      max-height: 180px;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      outline: none;
+      padding: 8px;
+    }
+
+    .composer textarea:focus { border: 0; }
+    .composer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .composer-hint { color: var(--muted); font-size: 11px; padding-left: 6px; }
+    .composer-buttons { display: flex; gap: 7px; align-items: center; }
+
+    #voiceButton.listening {
+      color: #ff8595;
+      border-color: #ff8595;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 5px #ff718522; }
+    }
+
+    .hidden { display: none !important; }
+
+    .notice {
+      max-width: 850px;
+      margin: 0 auto 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .error-text { color: var(--danger); }
+
+    @media (max-width: 760px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .topbar { padding: 11px 12px; }
+      .topbar small { display: none; }
+      .top-actions { gap: 5px; }
+      .model-select { max-width: 125px; }
+      .messages { padding: 18px 12px; }
+      .composer-area { padding: 9px 9px 12px; }
+      .composer-hint { display: none; }
     }
   </style>
 </head>
 
 <body>
-  <main class="app">
-    <aside class="sidebar">
-      <div class="side-top">
-        <div class="side-title">💬 Your Chats</div>
-        <button type="button" class="new-chat" id="newChatButton">
-          + New Chat
-        </button>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">✦</div>
+      <span>NovaMind AI</span>
+    </div>
+
+    <button id="newChatButton" class="primary">＋ New Chat</button>
+    <input id="searchChats" class="search" type="search" placeholder="Search chats...">
+
+    <div class="section-label">Your conversations</div>
+    <div id="chatList" class="chat-list"></div>
+
+    <button id="exportButton" class="secondary">↓ Export current chat</button>
+
+    <div class="user-panel">
+      <div class="user-name">{{ user_name }}</div>
+      <div>{{ user_email }}</div>
+      <form action="{{ url_for('logout') }}" method="POST" style="margin-top:10px">
+        <button class="secondary" type="submit" style="width:100%">Log out</button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>NovaMind AI</h1>
+        <small id="connectionStatus">Checking Ollama connection...</small>
+      </div>
+      <div class="top-actions">
+        <select id="modelSelect" class="model-select" aria-label="Select AI model">
+          <option value="llama3">Llama 3</option>
+          <option value="phi3">Phi-3</option>
+        </select>
+        <button id="mobileNewChat" class="secondary">＋ New</button>
+      </div>
+    </header>
+
+    <section id="messages" class="messages" aria-live="polite"></section>
+
+    <section class="composer-area">
+      <div class="tools-row">
+        <label class="file-label" for="fileInput">＋ Upload PDF/TXT</label>
+        <input id="fileInput" type="file" accept=".pdf,.txt,application/pdf,text/plain">
+        <span id="documentStatus" class="doc-status">No document attached</span>
+        <button id="removeDocumentButton" class="secondary hidden" type="button">Remove file</button>
+        <span id="saveStatus" class="save-status">Chat history ready</span>
       </div>
 
-      <div class="history-heading">Chat History</div>
-      <div id="historyList"></div>
-    </aside>
+      <div id="notice" class="notice">
+        AI can make mistakes. Verify important information.
+      </div>
 
-    <section class="main-chat">
-      <header>
-        <div class="brand">
-          <div class="logo">N</div>
-          <div>
-            <h1>NovaMind AI</h1>
-            <p>Your personal AI assistant</p>
+      <form id="chatForm" class="composer">
+        <textarea id="messageInput" rows="2" placeholder="Message NovaMind AI..." aria-label="Message"></textarea>
+        <div class="composer-bottom">
+          <span class="composer-hint">Enter to send · Shift+Enter for a new line</span>
+          <div class="composer-buttons">
+            <button id="voiceButton" class="secondary" type="button" title="Voice input">🎙️ Mic</button>
+            <button id="stopButton" class="secondary hidden" type="button">Stop</button>
+            <button id="sendButton" class="primary" type="submit">Send ↑</button>
           </div>
         </div>
-
-        <div class="details">
-          <span class="tag">Model: Llama 3</span>
-          <span class="tag">Powered by Ollama</span>
-          <span class="tag"><span class="status-dot"></span>Local AI</span>
-        </div>
-      </header>
-
-      <section id="messages" aria-live="polite"></section>
-
-      <form id="chatForm">
-        <input
-          id="question"
-          type="text"
-          placeholder="Ask NovaMind AI anything..."
-          maxlength="500"
-          autocomplete="off"
-          required
-        >
-        <button id="sendButton" type="submit">Send ↑</button>
       </form>
-
-      <div id="saveStatus" class="save-status">Chats saved in this browser</div>
-
-      <div class="footer">
-        NovaMind AI · Local LLM Assistant · Responses may need verification
-      </div>
     </section>
   </main>
+</div>
 
-  <script>
-    const form = document.getElementById("chatForm");
-    const input = document.getElementById("question");
-    const messages = document.getElementById("messages");
-    const sendButton = document.getElementById("sendButton");
-    const historyList = document.getElementById("historyList");
-    const newChatButton = document.getElementById("newChatButton");
-    const saveStatus = document.getElementById("saveStatus");
+<script>
+(() => {
+  "use strict";
 
-    const STORAGE_KEY = "novamind_chat_history_v1";
+  const $ = (id) => document.getElementById(id);
+  const messagesEl = $("messages");
+  const chatListEl = $("chatList");
+  const input = $("messageInput");
+  const sendButton = $("sendButton");
+  const stopButton = $("stopButton");
+  const saveStatus = $("saveStatus");
+  const notice = $("notice");
+  const fileInput = $("fileInput");
+  const documentStatus = $("documentStatus");
+  const removeDocumentButton = $("removeDocumentButton");
+  const voiceButton = $("voiceButton");
+  const modelSelect = $("modelSelect");
 
-    let chats = loadChats();
-    let currentChatId = null;
-    let busy = false;
+  const STORAGE_KEY = "novamind_chat_history_v1";
 
-    function loadChats() {
-      try {
-        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-        return Array.isArray(stored) ? stored : [];
-      } catch {
-        return [];
+  let chats = [];
+  let currentChatId = null;
+  let activeController = null;
+  let activeDocumentId = null;
+  let activeDocumentName = "";
+  let saveTimer = null;
+  let isListening = false;
+  let recognition = null;
+  let pinnedChatIds = new Set();
+
+  function makeId() {
+    return crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function formatText(text) {
+    // Escape HTML before adding basic Markdown-style formatting.
+    let html = escapeHtml(text);
+    html = html.replace(/```([\s\S]*?)```/g, (_, code) =>
+      "<pre><code>" + code.trim() + "</code></pre>"
+    );
+    html = html.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+    html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
+    return html;
+  }
+
+  function getCurrentChat() {
+    return chats.find(chat => chat.id === currentChatId) || null;
+  }
+
+  function readLocalChats() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return Array.isArray(parsed) ? parsed.filter(chat =>
+        chat && typeof chat.id === "string" && Array.isArray(chat.messages)
+      ) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function updateTitle(chat) {
+    const firstUserMessage = chat.messages.find(
+      message => message.role === "user" && message.content
+    );
+    if (firstUserMessage) {
+      chat.title = String(firstUserMessage.content)
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 55) || "New Chat";
+    }
+  }
+
+  function createChat() {
+    const now = Date.now();
+    const chat = {
+      id: makeId(),
+      title: "New Chat",
+      messages: [],
+      createdAt: now,
+      updatedAt: now
+    };
+
+    chats.unshift(chat);
+    currentChatId = chat.id;
+    renderAll();
+    saveChats();
+    input.focus();
+  }
+
+  function renderWelcome() {
+    messagesEl.innerHTML = `
+      <div class="welcome">
+        <div class="welcome-logo">✦</div>
+        <h2>How can I help you today?</h2>
+        <p>Ask questions, explore ideas, write code, or upload a PDF/TXT document for answers based on its content.</p>
+        <div class="suggestions">
+          <button class="suggestion" data-prompt="Explain artificial intelligence in simple terms">🤖 Learn AI</button>
+          <button class="suggestion" data-prompt="Help me debug my Python code">💻 Debug code</button>
+          <button class="suggestion" data-prompt="Create a step-by-step learning plan for machine learning">📚 Learning plan</button>
+        </div>
+      </div>`;
+
+    messagesEl.querySelectorAll("[data-prompt]").forEach(button => {
+      button.addEventListener("click", () => {
+        input.value = button.dataset.prompt;
+        input.focus();
+      });
+    });
+  }
+
+  function renderMessages() {
+    const chat = getCurrentChat();
+
+    if (!chat || !chat.messages.length) {
+      renderWelcome();
+      return;
+    }
+
+    messagesEl.innerHTML = chat.messages.map((message, index) => {
+      const isUser = message.role === "user";
+      const role = isUser ? "You" : "NovaMind AI";
+      const avatar = isUser ? "👤" : "✦";
+      const content = formatText(message.content || "");
+
+      return `
+        <article class="message" data-index="${index}">
+          <div class="avatar">${avatar}</div>
+          <div class="message-body">
+            <div class="message-role">${role}</div>
+            <div class="message-content">${content}</div>
+            <div class="message-tools">
+              <button type="button" data-action="copy" data-index="${index}">Copy</button>
+              ${!isUser && index === chat.messages.length - 1
+                ? `<button type="button" data-action="regenerate">Regenerate</button>`
+                : ""}
+              ${!isUser
+                ? `<button type="button" data-action="speak" data-index="${index}">🔊 Read aloud</button>`
+                : ""}
+            </div>
+          </div>
+        </article>`;
+    }).join("");
+
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function renderChatList() {
+    const query = $("searchChats").value.trim().toLowerCase();
+
+    const filtered = chats
+      .filter(chat => {
+        const matches = (chat.title || "").toLowerCase().includes(query) ||
+          chat.messages.some(message =>
+            String(message.content || "").toLowerCase().includes(query)
+          );
+        return matches;
+      })
+      .sort((a, b) => {
+        const pinDifference =
+          Number(pinnedChatIds.has(b.id)) - Number(pinnedChatIds.has(a.id));
+        return pinDifference || (b.updatedAt || 0) - (a.updatedAt || 0);
+      });
+
+    if (!filtered.length) {
+      chatListEl.innerHTML = '<div style="color:var(--muted);padding:8px;font-size:13px">No conversations found.</div>';
+      return;
+    }
+
+    chatListEl.innerHTML = filtered.map(chat => `
+      <div class="chat-item ${chat.id === currentChatId ? "active" : ""}">
+        <button class="chat-open" data-open="${escapeHtml(chat.id)}" title="${escapeHtml(chat.title)}">
+          ${pinnedChatIds.has(chat.id) ? "📌 " : ""}${escapeHtml(chat.title || "New Chat")}
+        </button>
+        <button class="chat-action" data-rename="${escapeHtml(chat.id)}" title="Rename chat">✎</button>
+        <button class="chat-action" data-pin="${escapeHtml(chat.id)}" title="Pin or unpin">📌</button>
+        <button class="chat-action" data-delete="${escapeHtml(chat.id)}" title="Delete chat">×</button>
+      </div>
+    `).join("");
+  }
+
+  function renderAll() {
+    renderChatList();
+    renderMessages();
+  }
+
+  async function apiRequest(url, options = {}) {
+    const response = await fetch(url, {
+      credentials: "same-origin",
+      ...options,
+      headers: {
+        ...(options.body ? { "Content-Type": "application/json" } : {}),
+        ...(options.headers || {})
       }
+    });
+
+    if (response.status === 401) {
+      window.location.href = "/login";
+      throw new Error("Please log in again.");
     }
 
-    function saveChats() {
+    return response;
+  }
+
+  function saveChats() {
+    const now = Date.now();
+    const chat = getCurrentChat();
+    if (chat) chat.updatedAt = now;
+
+    // Keep a local backup if the server temporarily cannot be reached.
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+    } catch (error) {
+      console.warn("Local chat backup could not be saved.", error);
+    }
+
+    clearTimeout(saveTimer);
+    saveStatus.textContent = "Saving chat...";
+
+    saveTimer = setTimeout(async () => {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
-        saveStatus.textContent = "✓ History auto-saved";
-      } catch {
-        saveStatus.textContent = "Could not save history. Browser storage may be full.";
+        const response = await apiRequest("/api/chats", {
+          method: "POST",
+          body: JSON.stringify({ chats })
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Save failed");
+
+        saveStatus.textContent = "✓ Saved to database";
+      } catch (error) {
+        saveStatus.textContent = "Offline backup saved";
+        console.error("Chat save failed:", error);
       }
+    }, 450);
+  }
+
+  async function initializeChats() {
+    const localChats = readLocalChats();
+
+    try {
+      const response = await apiRequest("/api/chats");
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not load chats");
+
+      const serverChats = Array.isArray(result.chats) ? result.chats : [];
+      const serverIds = new Set(serverChats.map(chat => chat.id));
+
+      // Server versions take precedence. Local-only chats are preserved and uploaded.
+      chats = [
+        ...serverChats,
+        ...localChats.filter(chat => !serverIds.has(chat.id))
+      ];
+
+      chats.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+      if (localChats.some(chat => !serverIds.has(chat.id))) {
+        saveChats();
+      } else {
+        saveStatus.textContent = "✓ Chat history synced";
+      }
+    } catch (error) {
+      console.error("Chat history load failed:", error);
+      chats = localChats;
+      saveStatus.textContent = "Local backup mode";
     }
 
-    function makeId() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-    }
-
-    function welcomeMessage() {
-      return {
-        role: "bot",
-        text: "Welcome to NovaMind AI! 👋\n\nAsk me questions, explore AI concepts, or get help with coding.\n\nTip: For answers based on your own documents, a RAG document-retrieval feature needs to be configured."
-      };
-    }
-
-    function getCurrentChat() {
-      return chats.find(chat => chat.id === currentChatId);
-    }
-
-    function createChat() {
+    if (!chats.length) {
+      const now = Date.now();
       const chat = {
         id: makeId(),
         title: "New Chat",
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        messages: [welcomeMessage()]
+        messages: [],
+        createdAt: now,
+        updatedAt: now
       };
-
-      chats.unshift(chat);
-      currentChatId = chat.id;
-      saveChats();
-      renderHistory();
-      renderMessages();
-      input.focus();
+      chats = [chat];
     }
 
-    function addMessage(text, role) {
-      const bubble = document.createElement("div");
-      bubble.className = "message " + role;
-      bubble.textContent = text;
-      messages.appendChild(bubble);
-      messages.scrollTop = messages.scrollHeight;
-      return bubble;
+    currentChatId = chats[0].id;
+    renderAll();
+    saveChats();
+  }
+
+  async function deleteChat(chatId) {
+    const chat = chats.find(item => item.id === chatId);
+    if (!chat) return;
+
+    if (!confirm(`Delete "${chat.title || "New Chat"}"? This cannot be undone.`)) {
+      return;
     }
 
-    function renderMessages() {
-      messages.replaceChildren();
-      const chat = getCurrentChat();
+    try {
+      const response = await apiRequest(
+        "/api/chats/" + encodeURIComponent(chatId),
+        { method: "DELETE" }
+      );
 
-      if (!chat) {
-        addMessage("Welcome to NovaMind AI! 👋\n\nStart a new chat to ask a question.", "bot");
-        return;
+      if (!response.ok && response.status !== 404) {
+        const result = await response.json();
+        throw new Error(result.error || "Could not delete chat");
       }
-
-      chat.messages.forEach(message => {
-        const bubble = addMessage(message.text, message.role);
-        if (message.role === "bot" && message.text.startsWith("Welcome to NovaMind AI!")) {
-          bubble.classList.add("welcome");
-        }
-      });
+    } catch (error) {
+      saveStatus.textContent = "Server delete failed. Please retry.";
+      console.error(error);
+      return;
     }
 
-    function renderHistory() {
-      historyList.replaceChildren();
+    chats = chats.filter(item => item.id !== chatId);
+    pinnedChatIds.delete(chatId);
 
-      if (chats.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty-history";
-        empty.textContent = "Your conversations will appear here automatically.";
-        historyList.appendChild(empty);
-        return;
-      }
-
-      chats.forEach(chat => {
-        const item = document.createElement("div");
-        item.className = "history-item";
-
-        const openButton = document.createElement("button");
-        openButton.type = "button";
-        openButton.className = "history-open" +
-          (chat.id === currentChatId ? " active" : "");
-        openButton.textContent = chat.title || "New Chat";
-        openButton.title = chat.title || "New Chat";
-        openButton.addEventListener("click", () => {
-          if (busy) return;
-          currentChatId = chat.id;
-          renderHistory();
-          renderMessages();
-        });
-
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.className = "delete-chat";
-        deleteButton.textContent = "×";
-        deleteButton.title = "Delete this chat";
-        deleteButton.setAttribute("aria-label", "Delete " + (chat.title || "chat"));
-
-        deleteButton.addEventListener("click", () => {
-          if (busy) return;
-          const confirmed = confirm("Delete this conversation?");
-          if (!confirmed) return;
-
-          chats = chats.filter(item => item.id !== chat.id);
-
-          if (currentChatId === chat.id) {
-            currentChatId = null;
-          }
-
-          saveChats();
-
-          if (!currentChatId || !getCurrentChat()) {
-            if (chats.length > 0) {
-              currentChatId = chats[0].id;
-            } else {
-              createChat();
-              return;
-            }
-          }
-
-          renderHistory();
-          renderMessages();
-        });
-
-        item.append(openButton, deleteButton);
-        historyList.appendChild(item);
-      });
+    if (currentChatId === chatId) {
+      currentChatId = chats[0]?.id || null;
     }
 
-    function addSavedMessage(role, text) {
-      const chat = getCurrentChat();
-      if (!chat) return;
-
-      chat.messages.push({ role, text });
-      chat.updatedAt = Date.now();
-
-      if (role === "user" && chat.title === "New Chat") {
-        chat.title = text.length > 30 ? text.slice(0, 30) + "…" : text;
-      }
-
-      chats.sort((a, b) => b.updatedAt - a.updatedAt);
-      saveChats();
-      renderHistory();
-    }
-
-    newChatButton.addEventListener("click", () => {
-      if (busy) return;
+    if (!currentChatId) {
       createChat();
+      return;
+    }
+
+    renderAll();
+    saveChats();
+  }
+
+  async function renameChat(chatId) {
+    const chat = chats.find(item => item.id === chatId);
+    if (!chat) return;
+
+    const title = prompt("Enter a new chat title:", chat.title || "New Chat");
+    if (title === null) return;
+
+    const cleaned = title.trim().slice(0, 200);
+    if (!cleaned) return;
+
+    chat.title = cleaned;
+    chat.updatedAt = Date.now();
+    renderAll();
+    saveChats();
+  }
+
+  function appendMessage(role, content) {
+    const chat = getCurrentChat();
+    if (!chat) return null;
+
+    const message = {
+      id: makeId(),
+      role,
+      content,
+      timestamp: Date.now()
+    };
+
+    chat.messages.push(message);
+    updateTitle(chat);
+    renderAll();
+    saveChats();
+    return message;
+  }
+
+  async function sendMessage(textOverride = null) {
+    const prompt = (textOverride ?? input.value).trim();
+    if (!prompt || activeController) return;
+
+    if (!getCurrentChat()) createChat();
+
+    input.value = "";
+    input.style.height = "auto";
+    appendMessage("user", prompt);
+
+    const chat = getCurrentChat();
+    const previousHistory = chat.messages
+      .slice(0, -1)
+      .filter(message => ["user", "assistant"].includes(message.role))
+      .map(message => ({
+        role: message.role,
+        content: message.content
+      }));
+
+    const assistantMessage = {
+      id: makeId(),
+      role: "assistant",
+      content: "",
+      timestamp: Date.now()
+    };
+
+    chat.messages.push(assistantMessage);
+    renderAll();
+    saveChats();
+
+    activeController = new AbortController();
+    sendButton.disabled = true;
+    stopButton.classList.remove("hidden");
+    notice.textContent = "NovaMind AI is generating a response...";
+
+    let fullAnswer = "";
+    let streamFailed = false;
+
+    try {
+      const response = await fetch("/chat/stream", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        signal: activeController.signal,
+        body: JSON.stringify({
+          message: prompt,
+          model: modelSelect.value,
+          history: previousHistory,
+          document_id: activeDocumentId
+        })
+      });
+
+      if (!response.ok) {
+        let errorMessage = "Request failed.";
+        try {
+          const result = await response.json();
+          errorMessage = result.error || errorMessage;
+        } catch {}
+        throw new Error(errorMessage);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+
+          let item;
+          try {
+            item = JSON.parse(line);
+          } catch {
+            continue;
+          }
+
+          if (item.type === "error") {
+            throw new Error(item.error || "AI generation failed.");
+          }
+
+          if (item.type === "chunk") {
+            fullAnswer += item.content || "";
+            assistantMessage.content = fullAnswer;
+            renderMessages();
+          }
+        }
+      }
+
+      if (buffer.trim()) {
+        try {
+          const item = JSON.parse(buffer);
+          if (item.type === "chunk") fullAnswer += item.content || "";
+          if (item.type === "error") throw new Error(item.error);
+        } catch (error) {
+          if (error instanceof Error && error.message !== "Unexpected end of JSON input") {
+            throw error;
+          }
+        }
+      }
+
+      assistantMessage.content = fullAnswer || "No response was returned.";
+    } catch (error) {
+      streamFailed = true;
+
+      if (error.name === "AbortError") {
+        assistantMessage.content = fullAnswer
+          ? fullAnswer + "\n\n[Generation stopped]"
+          : "[Generation stopped]";
+      } else {
+        assistantMessage.content = fullAnswer
+          ? fullAnswer + "\n\n[Response interrupted: " + error.message + "]"
+          : "Error: " + error.message;
+      }
+    } finally {
+      activeController = null;
+      sendButton.disabled = false;
+      stopButton.classList.add("hidden");
+      notice.textContent = "AI can make mistakes. Verify important information.";
+
+      const current = getCurrentChat();
+      if (current) {
+        updateTitle(current);
+        current.updatedAt = Date.now();
+      }
+
+      renderAll();
+      saveChats();
+
+      if (!streamFailed && fullAnswer) {
+        saveStatus.textContent = "✓ Response complete";
+      }
+    }
+  }
+
+  async function regenerateLastAnswer() {
+    const chat = getCurrentChat();
+    if (!chat || activeController) return;
+
+    let lastAssistant = -1;
+    for (let i = chat.messages.length - 1; i >= 0; i--) {
+      if (chat.messages[i].role === "assistant") {
+        lastAssistant = i;
+        break;
+      }
+    }
+
+    if (lastAssistant < 0) return;
+
+    chat.messages.splice(lastAssistant);
+    let lastUser = -1;
+
+    for (let i = chat.messages.length - 1; i >= 0; i--) {
+      if (chat.messages[i].role === "user") {
+        lastUser = i;
+        break;
+      }
+    }
+
+    if (lastUser < 0) {
+      renderAll();
+      saveChats();
+      return;
+    }
+
+    const prompt = chat.messages[lastUser].content;
+    chat.messages.splice(lastUser);
+    renderAll();
+    saveChats();
+    await sendMessage(prompt);
+  }
+
+  async function uploadDocument(file) {
+    if (!file) return;
+
+    const extension = file.name.split(".").pop().toLowerCase();
+    if (!["pdf", "txt"].includes(extension)) {
+      documentStatus.textContent = "Only PDF/TXT files are supported.";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      documentStatus.textContent = "Maximum file size is 5 MB.";
+      return;
+    }
+
+    documentStatus.textContent = "Uploading document...";
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("/upload-document", {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Upload failed");
+
+      activeDocumentId = result.document_id;
+      activeDocumentName = result.filename;
+      documentStatus.textContent = "Attached: " + activeDocumentName;
+      removeDocumentButton.classList.remove("hidden");
+    } catch (error) {
+      documentStatus.textContent = "Upload failed: " + error.message;
+    }
+  }
+
+  async function removeDocument() {
+    if (activeDocumentId) {
+      try {
+        await fetch("/documents/" + encodeURIComponent(activeDocumentId), {
+          method: "DELETE",
+          credentials: "same-origin"
+        });
+      } catch (error) {
+        console.warn("Could not remove server document:", error);
+      }
+    }
+
+    activeDocumentId = null;
+    activeDocumentName = "";
+    fileInput.value = "";
+    documentStatus.textContent = "No document attached";
+    removeDocumentButton.classList.add("hidden");
+  }
+
+  function exportCurrentChat() {
+    const chat = getCurrentChat();
+    if (!chat) {
+      alert("No chat to export.");
+      return;
+    }
+
+    const lines = [
+      "NovaMind AI Chat Export",
+      "Title: " + (chat.title || "New Chat"),
+      "Exported: " + new Date().toLocaleString(),
+      "",
+      ...chat.messages.map(message =>
+        (message.role === "user" ? "You" :
+          message.role === "assistant" ? "NovaMind AI" : "System") +
+        ":\n" + (message.content || "") + "\n"
+      )
+    ];
+
+    const blob = new Blob([lines.join("\n")], {
+      type: "text/plain;charset=utf-8"
     });
 
-    form.addEventListener("submit", async event => {
-      event.preventDefault();
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = (chat.title || "novamind-chat")
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
+      .slice(0, 80) + ".txt";
 
-      const message = input.value.trim();
-      if (!message || busy) return;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  }
 
-      if (!getCurrentChat()) {
-        createChat();
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      saveStatus.textContent = "Copied to clipboard";
+    } catch {
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      temp.remove();
+      saveStatus.textContent = "Copied to clipboard";
+    }
+  }
+
+  // Voice input: select Telugu or English from the browser prompt.
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "te-IN";
+
+    recognition.onstart = () => {
+      isListening = true;
+      voiceButton.classList.add("listening");
+      voiceButton.textContent = "🔴 Listening...";
+      notice.textContent = "Speak now. Choose Telugu or English using the language control.";
+    };
+
+    recognition.onresult = event => {
+      const transcript = event.results[0][0].transcript;
+      input.value = (input.value ? input.value + " " : "") + transcript;
+      input.focus();
+      notice.textContent = "Voice captured. Review your text, then press Send.";
+    };
+
+    recognition.onerror = event => {
+      notice.textContent = "Voice input error: " + event.error +
+        ". Check microphone permission and browser support.";
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      voiceButton.classList.remove("listening");
+      voiceButton.textContent = "🎙️ Mic";
+    };
+
+    voiceButton.addEventListener("click", () => {
+      if (isListening) {
+        recognition.stop();
+        return;
       }
 
-      addSavedMessage("user", message);
-      addMessage(message, "user");
-      input.value = "";
+      const language = prompt(
+        "Voice language:\n1 = Telugu\n2 = English",
+        "1"
+      );
 
-      busy = true;
-      sendButton.disabled = true;
-      newChatButton.disabled = true;
-
-      const waiting = addMessage("NovaMind AI is thinking...", "bot");
+      if (language === null) return;
+      recognition.lang = language.trim() === "2" ? "en-IN" : "te-IN";
 
       try {
-        const response = await fetch("/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Request failed.");
-        }
-
-        const answer = data.answer || "No answer was returned.";
-        waiting.textContent = answer;
-        addSavedMessage("bot", answer);
-
-      } catch (error) {
-        const errorText = "Error: " + error.message;
-        waiting.textContent = errorText;
-        addSavedMessage("bot", errorText);
-      } finally {
-        busy = false;
-        sendButton.disabled = false;
-        newChatButton.disabled = false;
-        input.focus();
-        messages.scrollTop = messages.scrollHeight;
+        recognition.start();
+      } catch {
+        notice.textContent = "Microphone is busy. Wait a moment and try again.";
       }
     });
+  } else {
+    voiceButton.disabled = true;
+    voiceButton.textContent = "Mic unavailable";
+    voiceButton.title = "Speech recognition is not supported by this browser.";
+  }
 
-    if (chats.length > 0) {
-      currentChatId = chats[0].id;
-      renderHistory();
-      renderMessages();
-    } else {
-      createChat();
+  // Read AI responses aloud. Browser speech voices vary by device.
+  function speakText(text) {
+    if (!("speechSynthesis" in window)) {
+      notice.textContent = "Speech output is not supported in this browser.";
+      return;
     }
-  </script>
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = /[\u0C00-\u0C7F]/.test(text) ? "te-IN" : "en-IN";
+    window.speechSynthesis.speak(utterance);
+  }
+
+  $("newChatButton").addEventListener("click", createChat);
+  $("mobileNewChat").addEventListener("click", createChat);
+  $("exportButton").addEventListener("click", exportCurrentChat);
+  $("searchChats").addEventListener("input", renderChatList);
+  fileInput.addEventListener("change", () => uploadDocument(fileInput.files[0]));
+  removeDocumentButton.addEventListener("click", removeDocument);
+
+  $("chatForm").addEventListener("submit", event => {
+    event.preventDefault();
+    sendMessage();
+  });
+
+  input.addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
+
+  input.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 180) + "px";
+  });
+
+  stopButton.addEventListener("click", () => {
+    if (activeController) activeController.abort();
+  });
+
+  chatListEl.addEventListener("click", event => {
+    const target = event.target.closest("button");
+    if (!target) return;
+
+    if (target.dataset.open) {
+      currentChatId = target.dataset.open;
+      renderAll();
+      return;
+    }
+
+    if (target.dataset.delete) {
+      deleteChat(target.dataset.delete);
+      return;
+    }
+
+    if (target.dataset.rename) {
+      renameChat(target.dataset.rename);
+      return;
+    }
+
+    if (target.dataset.pin) {
+      const id = target.dataset.pin;
+      if (pinnedChatIds.has(id)) pinnedChatIds.delete(id);
+      else pinnedChatIds.add(id);
+
+      try {
+        localStorage.setItem("novamind_pinned_chats", JSON.stringify([...pinnedChatIds]));
+      } catch {}
+      renderChatList();
+    }
+  });
+
+  messagesEl.addEventListener("click", event => {
+    const button = event.target.closest("button[data-action]");
+    if (!button) return;
+
+    const chat = getCurrentChat();
+    if (!chat) return;
+
+    const action = button.dataset.action;
+
+    if (action === "regenerate") {
+      regenerateLastAnswer();
+      return;
+    }
+
+    const index = Number(button.dataset.index);
+    const message = chat.messages[index];
+    if (!message) return;
+
+    if (action === "copy") copyText(message.content || "");
+    if (action === "speak") speakText(message.content || "");
+  });
+
+  async function checkConnection() {
+    const status = $("connectionStatus");
+
+    try {
+      const response = await fetch("/health", { credentials: "same-origin" });
+      const result = await response.json();
+
+      status.textContent = result.status === "connected"
+        ? "● Ollama connected"
+        : "● Ollama offline";
+
+      status.style.color = result.status === "connected"
+        ? "#65d9a2"
+        : "#ff8797";
+    } catch {
+      status.textContent = "● Connection unavailable";
+      status.style.color = "#ff8797";
+    }
+  }
+
+  try {
+    pinnedChatIds = new Set(
+      JSON.parse(localStorage.getItem("novamind_pinned_chats") || "[]")
+    );
+  } catch {
+    pinnedChatIds = new Set();
+  }
+
+  checkConnection();
+  initializeChats();
+})();
+</script>
 </body>
 </html>
